@@ -60,7 +60,7 @@ var DateTimePickerTime = onClickOutside( createClass({
 			}
 			return React.createElement('div', { key: type, className: 'rdtCounter' }, [
 				React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ), onContextMenu: this.disableContextMenu }, '▲' ),
-				React.createElement('div', { key: 'c', className: 'rdtCount' }, value ),
+				React.createElement('div', { key: 'c', className: 'rdtCount', role: 'button', tabIndex: '0', onKeyDown: event => this.handleCountKeyPress(event, type) }, value ),
 				React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ), onContextMenu: this.disableContextMenu }, '▼' )
 			]);
 		}
@@ -70,7 +70,7 @@ var DateTimePickerTime = onClickOutside( createClass({
 	renderDayPart: function() {
 		return React.createElement('div', { key: 'dayPart', className: 'rdtCounter' }, [
 			React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▲' ),
-			React.createElement('div', { key: this.state.daypart, className: 'rdtCount' }, this.state.daypart ),
+			React.createElement('div', { key: this.state.daypart, className: 'rdtCount', onKeyDown: event => this.handleDayPartKeyPress(event), role: 'button', tabIndex: '0'}, this.state.daypart ),
 			React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▼' )
 		]);
 	},
@@ -157,7 +157,7 @@ var DateTimePickerTime = onClickOutside( createClass({
 
 		var date = this.props.selectedDate || this.props.viewDate;
 		return React.createElement('thead', { key: 'h' }, React.createElement('tr', {},
-			React.createElement('th', { className: 'rdtSwitch', colSpan: 4, onClick: this.props.showView( 'days' ) }, date.format( this.props.dateFormat ) )
+			React.createElement('th', { className: 'rdtSwitch', colSpan: 4, onClick: this.props.showView( 'days' ), role: 'button', tabIndex: 0, onKeyPress: this.keyboardToggleDay }, date.format( this.props.dateFormat ) )
 		));
 	},
 
@@ -185,6 +185,92 @@ var DateTimePickerTime = onClickOutside( createClass({
 
 			document.body.addEventListener( 'mouseup', me.mouseUpListener );
 		};
+	},
+
+	handleCountKeyPress: function(event, type) {
+		var me = this
+		var action = event.which === 38 ? 'increase' : event.which === 40 ? 'decrease' : null
+		if (action) {
+			event.preventDefault()
+			
+			var update = {};
+			update[ type ] = me[ action ]( type );
+			
+			// Due to an issue in how some linux systems handle event listeners
+			// this function will not allow more event per keypress to fire if the user is on a Linux system
+			// Read more https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent#Auto-repeat_handling
+			if (window.navigator.platform.includes('Linux')) {
+				if (event.repeat) {
+					return
+				}
+				me.setState( update );
+				me.props.setTime( type, update[ type ] );
+				return
+			} else {	
+				me.setState( update );
+				
+				me.timer = setTimeout( function() {
+					me.increaseTimer = setInterval( function() {
+						update[ type ] = me[ action ]( type );
+						me.setState( update );
+					}, 70);
+				}, 500);
+				
+				me.mouseUpListener = function() {
+					clearTimeout( me.timer );
+					clearInterval( me.increaseTimer );
+					me.props.setTime( type, me.state[ type ] );
+					document.body.removeEventListener( 'keyup', me.mouseUpListener );
+				};
+				
+				document.body.addEventListener( 'keyup', me.mouseUpListener );
+			}
+		}
+	},
+
+	handleDayPartKeyPress: function(event) {
+		var me = this
+		if (event.which === 38 || event.which === 40) {
+			event.preventDefault()
+			
+			var update = {};
+			update.hours = me.toggleDayPart( 'hours' );
+
+			// Due to an issue in how some linux systems handle event listeners
+			// this function will not allow more event per keypress to fire if the user is on a Linux system
+			// Read more https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent#Auto-repeat_handling
+			if (window.navigator.platform.includes('Linux')) {
+				if (event.repeat) {
+					return
+				}
+				me.props.setTime( 'hours', update.hours );
+				return
+			} else {
+				me.setState(update)
+
+				me.timer = setTimeout( function() {
+					me.increaseTimer = setInterval( function() {
+						update.hours = me.toggleDayPart( 'hours' );
+						me.setState( update );
+					}, 70);
+				}, 500);
+
+				me.mouseUpListener = function() {
+					clearTimeout( me.timer );
+					clearInterval( me.increaseTimer );
+					me.props.setTime( 'hours', update.hours );
+					document.body.removeEventListener( 'keyup', me.mouseUpListener );
+				};
+
+				document.body.addEventListener( 'keyup', me.mouseUpListener );
+			}
+		}
+	},
+
+	keyboardToggleDay: function( event ) {
+		if (event.which === 13 || event.which === 32) {
+			this.props.showView( 'days' )()
+		}
 	},
 
 	disableContextMenu: function( event ) {

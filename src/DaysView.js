@@ -120,6 +120,12 @@ var DateTimePickerDays = onClickOutside( createClass({
 		return React.createElement('td',  props, currentDate.date() );
 	},
 
+	keyboardToggleTime: function( event ) {
+		if (event.which === 13 || event.which === 32) {
+			this.props.showView( 'time' )()
+		}
+	},
+
 	renderFooter: function() {
 		if ( !this.props.timeFormat )
 			return '';
@@ -128,7 +134,7 @@ var DateTimePickerDays = onClickOutside( createClass({
 
 		return React.createElement('tfoot', { key: 'tf'},
 			React.createElement('tr', {},
-				React.createElement('td', { onClick: this.props.showView( 'time' ), colSpan: 7, className: 'rdtTimeToggle' }, date.format( this.props.timeFormat ))
+				React.createElement('td', { onClick: this.props.showView( 'time' ), colSpan: 7, className: 'rdtTimeToggle', tabIndex: '0', role: 'button', onKeyPress: this.keyboardToggleTime}, date.format( this.props.timeFormat ))
 			)
 		);
 	},
