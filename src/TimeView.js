@@ -216,14 +216,14 @@ var DateTimePickerTime = onClickOutside( createClass({
 					}, 70);
 				}, 500);
 				
-				me.mouseUpListener = function() {
+				me.keyUpListener = function() {
 					clearTimeout( me.timer );
 					clearInterval( me.increaseTimer );
 					me.props.setTime( type, me.state[ type ] );
-					document.body.removeEventListener( 'keyup', me.mouseUpListener );
+					document.body.removeEventListener( 'keyup', me.keyUpListener );
 				};
 				
-				document.body.addEventListener( 'keyup', me.mouseUpListener );
+				document.body.addEventListener( 'keyup', me.keyUpListener );
 			}
 		}
 	},
@@ -255,14 +255,14 @@ var DateTimePickerTime = onClickOutside( createClass({
 					}, 70);
 				}, 500);
 
-				me.mouseUpListener = function() {
+				me.keyUpListener = function() {
 					clearTimeout( me.timer );
 					clearInterval( me.increaseTimer );
 					me.props.setTime( 'hours', update.hours );
-					document.body.removeEventListener( 'keyup', me.mouseUpListener );
+					document.body.removeEventListener( 'keyup', me.keyUpListener );
 				};
 
-				document.body.addEventListener( 'keyup', me.mouseUpListener );
+				document.body.addEventListener( 'keyup', me.keyUpListener );
 			}
 		}
 	},
