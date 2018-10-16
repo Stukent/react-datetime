@@ -93,7 +93,8 @@ var DateTimePickerDays = onClickOutside( createClass({
 			dayProps = {
 				key: prevMonth.format( 'M_D' ),
 				'data-value': prevMonth.date(),
-				className: classes
+				className: classes,
+				updateSelectedDate: this.updateSelectedDate
 			};
 
 			if ( !isDisabled )
