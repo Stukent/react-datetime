@@ -115,7 +115,7 @@ var DateTimePickerDays = onClickOutside( createClass({
 
 	componentDidMount: function() {
 		if (this.props.focusFirstActiveDay) {
-			const activeDays = document.querySelectorAll('.rdtDays:not(.rdtDisabled)')
+			const activeDays = document.querySelectorAll('.rdtDay:not(.rdtDisabled)')
 			activeDays[0].focus()
 		}
 	},
