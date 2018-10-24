@@ -113,6 +113,13 @@ var DateTimePickerDays = onClickOutside( createClass({
 		return weeks;
 	},
 
+	componentDidMount: function() {
+		if (this.props.focusFirstActiveDay) {
+			const activeDays = document.querySelectorAll('.rdtDays:not(.rdtDisabled)')
+			activeDays[0].focus()
+		}
+	},
+
 	updateSelectedDate: function( event ) {
 		this.props.updateSelectedDate( event, true );
 	},

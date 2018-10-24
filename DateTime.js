@@ -31,7 +31,8 @@ var Datetime = createClass({
 		strictParsing: TYPES.bool,
 		closeOnSelect: TYPES.bool,
 		closeOnTab: TYPES.bool,
-		calendarBlurFn: TYPES.func
+		calendarBlurFn: TYPES.func,
+		focusFirstActiveDay: TYPES.bool
 	},
 
 	getDefaultProps: function() {
@@ -387,7 +388,7 @@ var Datetime = createClass({
 	},
 
 	componentProps: {
-		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints', 'headerFormat', 'calendarBlurFn'],
+		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints', 'headerFormat', 'calendarBlurFn', 'focusFirstActiveDay'],
 		fromState: ['viewDate', 'selectedDate', 'updateOn'],
 		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment', 'handleClickOutside']
 	},
