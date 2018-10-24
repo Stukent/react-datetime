@@ -9,7 +9,7 @@ var DateTimePickerYears = onClickOutside( createClass({
 	render: function() {
 		var year = parseInt( this.props.viewDate.year() / 10, 10 ) * 10;
 
-		return React.createElement('div', { className: 'rdtYears' }, [
+		return React.createElement('div', { className: 'rdtYears', onBlur: this.props.calendarBlurFn || function() {} }, [
 			React.createElement('table', { key: 'a' }, React.createElement('thead', {}, React.createElement('tr', {}, [
 				React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 10, 'years' )}, React.createElement('span', {}, '‹' )),
 				React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2 }, year + '-' + ( year + 9 ) ),

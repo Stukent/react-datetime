@@ -7,7 +7,7 @@ var React = require('react'),
 
 var DateTimePickerMonths = onClickOutside( createClass({
 	render: function() {
-		return React.createElement('div', { className: 'rdtMonths' }, [
+		return React.createElement('div', { className: 'rdtMonths', onBlur: this.props.calendarBlurFn || function() {} }, [
 			React.createElement('table', { key: 'a' }, React.createElement('thead', {}, React.createElement('tr', {}, [
 				React.createElement('th', { key: 'prev', className: 'rdtPrev', onClick: this.props.subtractTime( 1, 'years' )}, React.createElement('span', {}, '‹' )),
 				React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2, 'data-value': this.props.viewDate.year() }, this.props.viewDate.year() ),

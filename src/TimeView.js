@@ -99,7 +99,7 @@ var DateTimePickerTime = onClickOutside( createClass({
 				);
 		}
 
-		return React.createElement('div', { className: 'rdtTime' },
+		return React.createElement('div', { className: 'rdtTime', onBlur: this.props.calendarBlurFn || function() {} },
 			React.createElement('table', {}, [
 				this.renderHeader(),
 				React.createElement('tbody', { key: 'b'}, React.createElement('tr', {}, React.createElement('td', {},

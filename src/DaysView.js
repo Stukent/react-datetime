@@ -30,7 +30,7 @@ var DateTimePickerDays = onClickOutside( createClass({
 		if ( footer )
 			tableChildren.push( footer );
 
-		return React.createElement('div', { className: 'rdtDays' },
+		return React.createElement('div', { className: 'rdtDays', onBlur: this.props.calendarBlurFn || function() {} },
 			React.createElement('table', {}, tableChildren )
 		);
 	},

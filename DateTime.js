@@ -30,7 +30,8 @@ var Datetime = createClass({
 		open: TYPES.bool,
 		strictParsing: TYPES.bool,
 		closeOnSelect: TYPES.bool,
-		closeOnTab: TYPES.bool
+		closeOnTab: TYPES.bool,
+		calendarBlurFn: TYPES.func
 	},
 
 	getDefaultProps: function() {
@@ -406,6 +407,10 @@ var Datetime = createClass({
 		this.componentProps.fromThis.forEach( function( name ) {
 			props[ name ] = me[ name ];
 		});
+
+		if (this.props.calendarBlurFn) {
+			props.onBlur = this.props.calendarBlurFn
+		}
 
 		return props;
 	},
