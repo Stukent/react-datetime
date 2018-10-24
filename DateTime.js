@@ -387,7 +387,7 @@ var Datetime = createClass({
 	},
 
 	componentProps: {
-		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints', 'headerFormat'],
+		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints', 'headerFormat', 'calendarBlurFn'],
 		fromState: ['viewDate', 'selectedDate', 'updateOn'],
 		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment', 'handleClickOutside']
 	},
@@ -407,10 +407,6 @@ var Datetime = createClass({
 		this.componentProps.fromThis.forEach( function( name ) {
 			props[ name ] = me[ name ];
 		});
-
-		if (this.props.calendarBlurFn) {
-			props.onBlur = this.props.calendarBlurFn
-		}
 
 		return props;
 	},
